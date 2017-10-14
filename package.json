@@ -1,0 +1,19 @@
+{
+  "name": "fp-fractal",
+  "version": "1.0.0",
+  "description": "A simple fractal viewer.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LaOwlLol/fp-fractal.git"
+  },
+  "author": "LaOwlLol (Nate G)",
+  "license": "CC-BY-NC-4.0",
+  "bugs": {
+    "url": "https://github.com/LaOwlLol/fp-fractal/issues"
+  },
+  "homepage": "https://github.com/LaOwlLol/fp-fractal#readme"
+}
