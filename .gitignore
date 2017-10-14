@@ -1,0 +1,44 @@
+# Logs:
+log/
+npm-debug.log*
+
+# Runtime data:
+pids
+*.pid
+*.seed
+*.pid.lock
+*.key
+*.crt
+*.perm
+*.pem
+*rsa*
+*.pub
+
+# certificates and keys
+certs/
+
+# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
+.grunt
+
+# Bower dependency directory (https://bower.io/)
+bower_components
+
+# Dependency directories
+node_modules/
+package-lock.json
+
+# Optional npm cache directory
+.npm
+
+# Output of 'npm pack'
+*.tgz
+
+#custom tools
+utils/
+setGCDEnvVars.sh
+getGDCEnvStatus.sh
+emuGCD.sh
+emulateDataStore.sh
+
+#emulator data stash
+backups/
