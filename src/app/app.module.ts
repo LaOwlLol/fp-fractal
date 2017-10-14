@@ -4,11 +4,13 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { FractalCanvasComponent } from './fractal-canvas/fractal-canvas.component';
+import { FractalControllerComponent } from './fractal-controller/fractal-controller.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FractalCanvasComponent
+    FractalCanvasComponent,
+    FractalControllerComponent
   ],
   imports: [
     BrowserModule,

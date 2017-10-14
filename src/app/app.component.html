@@ -4,29 +4,4 @@
     Welcome to {{title}}!
   </h1>
 </div>
-<fractal-canvas [data] = canvasData [width]="800"
-	[height]="500">
-		
-</fractal-canvas>
-<div>X-Min: 
-	<input  type="range" [(ngModel)]="minX" min="-2.5" max={{maxX}} >
-	<input  type="text" [(ngModel)]="minX">
-</div>
-<div>X-Max: 
-	<input  type="range" [(ngModel)]="maxX" min={{minX}} max="1.0" >
-	<input  type="text" [(ngModel)]="maxX">
-</div>
-
-<div>Y-Min: 
-	<input  type="range" [(ngModel)]="minY" min="-1.0" max={{maxY}} >
-	<input  type="text" [(ngModel)]="minY">
-</div>
-<div>Y-Max: 
-	<input  type="range" [(ngModel)]="maxY"  min={{minY}} max="1.0" >
-	<input  type="text" [(ngModel)]="maxY">
-</div>
-<button (click)="onPopulate()" > Populate </button>
-
-
-
-
+<fractal-controller [minX]="-2.5" [maxX]="1" [minY]="-1" [maxY]="1"></fractal-controller>
