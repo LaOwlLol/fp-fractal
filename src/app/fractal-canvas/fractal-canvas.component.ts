@@ -22,20 +22,25 @@ export class FractalCanvasComponent implements OnInit {
 	ngOnInit() {
 		this.canvasRef.nativeElement.width = this.width;
 		this.canvasRef.nativeElement.height = this.height;
-		this.running = true;
+		//this.running = true;
 		this.paint();
 	}
 
 	ngOnDestroy() {
-    	this.running = false;
+    	//this.running = false;
   	}
 
+  	ngOnChanges() {
+  		this.paint();
+  	}
  
  	private paint() {
 
+ 		/*
  		if (!this.running) {
  			return;
  		}
+ 		*/
 
  		let ctx: CanvasRenderingContext2D =
 		  this.canvasRef.nativeElement.getContext('2d');
@@ -45,7 +50,7 @@ export class FractalCanvasComponent implements OnInit {
 			ctx.fillRect(x, y, 1, 1);
 		}
 		
-		requestAnimationFrame(() => this.paint());
+		//requestAnimationFrame(() => this.paint());
  	}
   
 }
