@@ -3,18 +3,30 @@
   <h1>
     Welcome to {{title}}!
   </h1>
-  <img width="300" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<fractal-canvas [data] = canvasData [width]="800"
+	[height]="500">
+		
+</fractal-canvas>
+<div>X-Min: 
+	<input  type="range" [(ngModel)]="minX" min="-2.5" max={{maxX}} >
+	<input  type="text" [(ngModel)]="minX">
+</div>
+<div>X-Max: 
+	<input  type="range" [(ngModel)]="maxX" min={{minX}} max="1.0" >
+	<input  type="text" [(ngModel)]="maxX">
+</div>
+
+<div>Y-Min: 
+	<input  type="range" [(ngModel)]="minY" min="-1.0" max={{maxY}} >
+	<input  type="text" [(ngModel)]="minY">
+</div>
+<div>Y-Max: 
+	<input  type="range" [(ngModel)]="maxY"  min={{minY}} max="1.0" >
+	<input  type="text" [(ngModel)]="maxY">
+</div>
+<button (click)="onPopulate()" > Populate </button>
+
+
+
 
