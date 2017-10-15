@@ -1,36 +1,37 @@
 <fractal-canvas [data] = canvasData [width]="this.width" [height]="this.height"></fractal-canvas>
 
 <ul>
-	<li class="range-label"> X-Min: </li>
+	<li class="range-label"> Minimum X or left screen edge: </li>
 	<li>
 		<input type="range" class="slider" [(ngModel)]="minX" min="-2.5" max={{maxX}} step="0.01">
 		<input type="text" [(ngModel)]="minX" class="range-input">
 	</li>
 
-	<li class="range-label"> X-Max: </li>
+	<li class="range-label"> Maximum X or right screen edge: </li>
 	<li>
 		<input type="range" class="slider" [(ngModel)]="maxX" min={{minX}} max="1.0" step="0.01">
 		<input type="text" [(ngModel)]="maxX" class="range-input">
 	</li>
 
 
-	<li class="range-label"> Y-Min: </li>
+	<li class="range-label"> Minimum Y or top screen edge (upside down y axis): </li>
 	<li>
 		<input type="range" class="slider" [(ngModel)]="minY" min="-1.0" max={{maxY}} step="0.01">
 		<input type="text" [(ngModel)]="minY" class="range-input">
 	</li>
 
 
-	<li class="range-label"> Y-Max: </li>
+	<li class="range-label"> Maximum Y or bottom screen edge: </li>
 	<li>
-		<input  type="range" class="slider" [(ngModel)]="maxY"  min={{minY}} max="1.0" step="0.01">
-		<input  type="text" [(ngModel)]="maxY" class="range-input">
+		<input type="range" class="slider" [(ngModel)]="maxY"  min={{minY}} max="1.0" step="0.01">
+		<input type="text" [(ngModel)]="maxY" class="range-input">
 	</li>
 
 	
 	<li class="range-label"> Escape Value: </li>
 	<li>
-		<input  type="range" class="slider" #escapeVal (change)="onIterChanged($event.target.value)" [(ngModel)]="iterations" min="10" max="1000" >
+		<input type="range" class="slider" #escapeVal [(ngModel)]="iterations" min="10" max="1000" 
+		  (change)="onIterChanged($event.target.value)" >
 		<p>{{iterations}}</p>
 	</li>
 

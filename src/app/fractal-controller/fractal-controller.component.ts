@@ -24,7 +24,7 @@ export class FractalControllerComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
-		this.iterations = 1000;
+		this.iterations = 25;
 		this.colors = this.generateColor('#ffc700', '#0011ff', this.iterations);
 	}
 
