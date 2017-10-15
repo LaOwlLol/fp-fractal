@@ -20,8 +20,12 @@ export class FractalCanvasComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
+
+		console.log("w: "+this.width+" h: "+this.height);
 		this.canvasRef.nativeElement.width = this.width;
 		this.canvasRef.nativeElement.height = this.height;
+		this.canvasRef.nativeElement.style.width = this.width;
+		this.canvasRef.nativeElement.style.height = this.height;
 		//this.running = true;
 		this.paint();
 	}

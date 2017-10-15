@@ -1,4 +1,5 @@
-import { Component, OnInit, OnChanges, Input  } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ViewChild, ElementRef  } from '@angular/core';
+
 
 @Component({
 	selector: 'fractal-controller',
@@ -11,6 +12,11 @@ export class FractalControllerComponent implements OnInit {
 	@Input('maxX') maxX: number;
 	@Input('minY') minY: number;
 	@Input('maxY') maxY: number;
+	@Input('width') width: number;
+	@Input('height') height: number;
+	@ViewChild('escapeVal') escapeValue: ElementRef;
+
+	iterations: number;
 	
 	canvasData = [ ];
 	colors = [];
@@ -18,7 +24,8 @@ export class FractalControllerComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
-		this.colors = this.generateColor('#FF0000', '#0000FF', 1000 );
+		this.iterations = 1000;
+		this.colors = this.generateColor('#ffc700', '#0011ff', this.iterations);
 	}
 
 	private ngOnChanges() {
@@ -29,10 +36,15 @@ export class FractalControllerComponent implements OnInit {
 		this.populate();
 	}
 
+	private onIterChanged(newVal) {
+		this.iterations = newVal;
+		this.colors = this.generateColor('#ffc700', '#0011ff', this.iterations);
+	}
+
 	private populate() {
 		this.canvasData = [ ];
-		for (var i = 0; i < 800; i++) {
-			for (var k = 0; k < 500; k++) {
+		for (var i = 0; i < this.width; i++) {
+			for (var k = 0; k < this.height; k++) {
 
 				let x0 = this.scaleX(i);
 				let y0 = this.scaleY(k);
@@ -65,11 +77,11 @@ export class FractalControllerComponent implements OnInit {
 	}
 
 	scaleX(_x) {
-		return this.minX * (1 - (_x/799)) + this.maxX * (_x/799);
+		return this.minX * (1 - (_x/(this.width-1))) + this.maxX * (_x/(this.width-1));
 	}
 
 	scaleY(_y) {
-		return this.minY * (1 - (_y/499)) + this.maxY * (_y/499);
+		return this.minY * (1 - (_y/(this.height-1))) + this.maxY * (_y/(this.height-1));
 	}
 
 

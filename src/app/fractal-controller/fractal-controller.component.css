@@ -1,0 +1,17 @@
+
+ul {
+  list-style-type: none;
+}
+
+.slider
+{
+    width: 600px;
+}
+.range-label 
+{
+	width: 200px;
+}
+.range-input
+{
+	width: 100px;
+}
