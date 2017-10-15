@@ -1,48 +1,23 @@
-import { Component, OnInit, OnChanges, Input, ViewChild, ElementRef  } from '@angular/core';
+export class Fractal {
 
-
-@Component({
-	selector: 'fractal-controller',
-	templateUrl: './fractal-controller.component.html',
-	styleUrls: ['./fractal-controller.component.css']
-})
-export class FractalControllerComponent implements OnInit {
-
-	@Input('minX') minX: number;
-	@Input('maxX') maxX: number;
-	@Input('minY') minY: number;
-	@Input('maxY') maxY: number;
-	@Input('width') width: number;
-	@Input('height') height: number;
-	//@ViewChild('escapeVal') escapeValue: ElementRef;
-
+	minX: number;
+	maxX: number;
+	minY: number;
+	maxY: number;
+	width: number;
+	height: number;
 	iterations: number;
-	
-	canvasData = [ ];
-	colors = [];
+	PixelData: Pixel[];
+	Palette: string[];
 
-	constructor() { }
-
-	ngOnInit() {
-		this.iterations = 25;
-		this.colors = this.generateColor('#ffc700', '#0011ff', this.iterations);
-	}
-
-	private ngOnChanges() {
-		this.populate();
-	}
-
-	onPopulate() {
-		this.populate();
-	}
-
-	onIterChanged(newVal) {
+	private onIterChanged(newVal) {
 		this.iterations = newVal;
 		this.colors = this.generateColor('#ffc700', '#0011ff', this.iterations);
 	}
 
-	private populate() {
-		this.canvasData = [ ];
+	private OnReCalc() {
+		let newPixels = [];
+
 		for (var i = 0; i < this.width; i++) {
 			for (var k = 0; k < this.height; k++) {
 
@@ -63,17 +38,17 @@ export class FractalControllerComponent implements OnInit {
 
 				//console.log(i +","+k+": "+iter);
 				if (iter < max_iter) {
-					this.canvasData.push(
+					newPixels.push(
 						{x: i, y: k, c: this.colors[iter] }
 					);
 				}
 				else {
-					this.canvasData.push({x: i, y: k, c: '#000000'});
+					newPixels.push({x: i, y: k, c: '#000000'});
 				}
-				
-				
 			}
 		}
+
+		this.PixelData = newPixels;
 	}
 
 	scaleX(_x) {
@@ -131,7 +106,7 @@ export class FractalControllerComponent implements OnInit {
 			saida.push(this.convertToHex (c));
 		}
 
-		return saida;
+		this.Palette = saida;
 	}
 
 }
