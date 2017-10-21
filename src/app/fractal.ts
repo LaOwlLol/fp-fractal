@@ -1,3 +1,5 @@
+import { Pixel } from './pixel';
+
 export class Fractal {
 
 	minX: number;
@@ -7,12 +9,55 @@ export class Fractal {
 	width: number;
 	height: number;
 	iterations: number;
-	PixelData: Pixel[];
-	Palette: string[];
+	escapeColor: string;
+	lowColor: string;
+	highColor: string;
+	palette: string[];
+	pixelData: Pixel[];
+
+	MinX(newMin) {
+		this.minX = newMin;
+	}
+
+	MaxX(newMax) {
+		this.maxX = newMax;
+	}
+
+	MinY(newMin) {
+		this.minY = newMin;
+	}
+
+	MaxY(newMax) {
+		this.maxY = newMax;
+	}
+
+	Width(newWidth) {
+		this.width = newWidth;
+	}
+
+	Height(newHeight) {
+		this.height = newHeight;
+	}
+
+	Iterations(newEscape) {
+		this.iterations = newEscape;
+	}
+
+	EscapeColor(newColor) {
+		this.EscapeColor = newColor;
+	}
+
+	LowColor(newColor) {
+		this.LowColor = newColor;
+	}
+
+	HighColor(newColor) {
+		this.HighColor = newColor;
+	}
 
 	private onIterChanged(newVal) {
 		this.iterations = newVal;
-		this.colors = this.generateColor('#ffc700', '#0011ff', this.iterations);
+		this.generateColor(this.iterations);
 	}
 
 	private OnReCalc() {
@@ -27,9 +72,8 @@ export class Fractal {
 				let _y = 0.0;
 
 				let iter = 0;
-				let max_iter = this.colors.length;
 
-				while ( ((_x*_x + _y*_y) < 4) && (iter < max_iter)) {
+				while ( ((_x*_x + _y*_y) < 4) && (iter < this.iterations)) {
 					let xtemp = _x*_x - _y*_y + x0;
 					_y = 2*_x*_y + y0;
 					_x = xtemp;
@@ -37,18 +81,18 @@ export class Fractal {
 				}
 
 				//console.log(i +","+k+": "+iter);
-				if (iter < max_iter) {
+				if (iter < this.iterations) {
 					newPixels.push(
-						{x: i, y: k, c: this.colors[iter] }
+						{x: i, y: k, c: this.palette[iter] }
 					);
 				}
 				else {
-					newPixels.push({x: i, y: k, c: '#000000'});
+					newPixels.push({x: i, y: k, c: this.escapeColor});
 				}
 			}
 		}
 
-		this.PixelData = newPixels;
+		this.pixelData = newPixels;
 	}
 
 	scaleX(_x) {
@@ -83,12 +127,12 @@ export class Fractal {
 		return color;
 	}
 
-	generateColor(colorStart,colorEnd,colorCount){
+	generateColor(colorCount){
 
 		// The beginning of your gradient
-		let start = this.convertToRGB (colorStart);    
+		let start = this.convertToRGB (this.LowColor);    
 		// The end of your gradient
-		let end   = this.convertToRGB (colorEnd);    
+		let end   = this.convertToRGB (this.HighColor);    
 		//Alpha blending amount
 		let alpha = 0.0;
 		let saida = [];
@@ -106,7 +150,7 @@ export class Fractal {
 			saida.push(this.convertToHex (c));
 		}
 
-		this.Palette = saida;
+		this.palette = saida;
 	}
 
 }
