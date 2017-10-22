@@ -1,7 +1,13 @@
+import { OnChanges } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+
 import { Pixel } from './pixel';
 
 export class Fractal {
 
+	//dirtyPixels: boolean;
+	dirtyPalette: boolean;
 	minX: number;
 	maxX: number;
 	minY: number;
@@ -13,7 +19,45 @@ export class Fractal {
 	lowColor: string;
 	highColor: string;
 	palette: string[];
-	pixelData: Pixel[];
+	pixelBuffer: Observable<Pixel>;
+	//observer: any;
+
+	constructor(_minX: number, _maxX: number, _minY: number, _maxY: number,
+		_width: number, _height: number, _iter: number,
+		_escapeColor: string, _lowColor: string, _highColor: string) {
+
+
+		//this.dirtyPixels = true;
+		this.dirtyPalette = true;
+		this.minX = _minX;
+		this.maxX = _maxX;
+		this.minY = _minY;
+		this.maxY = _maxY;
+		this.width = _width;
+		this.height = _height;
+		this.iterations = _iter;
+		this.escapeColor = _escapeColor;
+		this.lowColor = _lowColor;
+		this.highColor = _highColor;
+
+		this.pixelBuffer = new Observable( observer => { 
+			//this.observer = observer;
+			this.refreshPixelData(observer); 
+		});
+
+	}
+
+	ngOnChanges() {
+  		//this.refreshPixelData(this.observer);
+  	}
+
+	/*DirtyPixels(value) {
+		this.dirtyPixels = value;
+	}*/
+
+	DirtyPalette(value) {
+		this.dirtyPalette = value;
+	}
 
 	MinX(newMin) {
 		this.minX = newMin;
@@ -41,6 +85,7 @@ export class Fractal {
 
 	Iterations(newEscape) {
 		this.iterations = newEscape;
+		this.dirtyPalette = true;
 	}
 
 	EscapeColor(newColor) {
@@ -55,13 +100,13 @@ export class Fractal {
 		this.HighColor = newColor;
 	}
 
-	private onIterChanged(newVal) {
-		this.iterations = newVal;
-		this.generateColor(this.iterations);
-	}
+	refreshPixelData(observer) {
+		//let newPixels = [];
 
-	private OnReCalc() {
-		let newPixels = [];
+		
+		if (this.dirtyPalette) {
+			this.refreshPalette();
+		}
 
 		for (var i = 0; i < this.width; i++) {
 			for (var k = 0; k < this.height; k++) {
@@ -82,17 +127,43 @@ export class Fractal {
 
 				//console.log(i +","+k+": "+iter);
 				if (iter < this.iterations) {
-					newPixels.push(
+					observer.next(
 						{x: i, y: k, c: this.palette[iter] }
 					);
 				}
 				else {
-					newPixels.push({x: i, y: k, c: this.escapeColor});
+					observer.next({x: i, y: k, c: this.escapeColor});
 				}
 			}
 		}
 
-		this.pixelData = newPixels;
+	}
+
+	refreshPalette(){
+
+		// The beginning of your gradient
+		let start = this.convertToRGB(this.lowColor);    
+		// The end of your gradient
+		let end   = this.convertToRGB(this.highColor);    
+		//Alpha blending amount
+		let alpha = 0.0;
+		let saida = [];
+
+		for (let i = 0; i < this.iterations; i++) {
+			let c = [];
+
+			alpha += (1.0/this.iterations);
+			
+			c[0] = start[0] * alpha + (1 - alpha) * end[0];
+			c[1] = start[1] * alpha + (1 - alpha) * end[1];
+			c[2] = start[2] * alpha + (1 - alpha) * end[2];
+
+			//console.log(i+": "+this.convertToHex(c));
+			saida.push(this.convertToHex(c));
+		}
+
+		this.palette = saida;
+		this.DirtyPalette(false);
 	}
 
 	scaleX(_x) {
@@ -102,7 +173,6 @@ export class Fractal {
 	scaleY(_y) {
 		return this.minY * (1 - (_y/(this.height-1))) + this.maxY * (_y/(this.height-1));
 	}
-
 
 	hex (c) {
 		var s = "0123456789abcdef";
@@ -127,30 +197,9 @@ export class Fractal {
 		return color;
 	}
 
-	generateColor(colorCount){
-
-		// The beginning of your gradient
-		let start = this.convertToRGB (this.LowColor);    
-		// The end of your gradient
-		let end   = this.convertToRGB (this.HighColor);    
-		//Alpha blending amount
-		let alpha = 0.0;
-		let saida = [];
-
-		for (let i = 0; i < colorCount; i++) {
-			let c = [];
-
-			alpha += (1.0/colorCount);
-			
-			c[0] = start[0] * alpha + (1 - alpha) * end[0];
-			c[1] = start[1] * alpha + (1 - alpha) * end[1];
-			c[2] = start[2] * alpha + (1 - alpha) * end[2];
-
-			//console.log(i+": "+this.convertToHex(c));
-			saida.push(this.convertToHex (c));
-		}
-
-		this.palette = saida;
-	}
-
 }
+
+	
+
+
+	

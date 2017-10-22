@@ -1,41 +1,35 @@
-<fractal-canvas [data] = canvasData [width]="this.width" [height]="this.height"></fractal-canvas>
 
 <ul>
 	<li class="range-label"> Minimum X or left screen edge: </li>
 	<li>
-		<input type="range" class="slider" [(ngModel)]="minX" min="-2.5" max={{maxX}} step="0.01">
-		<input type="text" [(ngModel)]="minX" class="range-input">
+		<input type="range" class="slider" [(ngModel)]="fractal.minX" min="-2.5" max={{fractal.maxX}} step="0.01">
+		<input type="text" [(ngModel)]="fractal.minX" class="range-input">
 	</li>
 
 	<li class="range-label"> Maximum X or right screen edge: </li>
 	<li>
-		<input type="range" class="slider" [(ngModel)]="maxX" min={{minX}} max="1.0" step="0.01">
-		<input type="text" [(ngModel)]="maxX" class="range-input">
+		<input type="range" class="slider" [(ngModel)]="fractal.maxX" min={{fractal.minX}} max="1.0" step="0.01">
+		<input type="text" [(ngModel)]="fractal.maxX" class="range-input">
 	</li>
 
 
 	<li class="range-label"> Minimum Y or top screen edge (upside down y axis): </li>
 	<li>
-		<input type="range" class="slider" [(ngModel)]="minY" min="-1.0" max={{maxY}} step="0.01">
-		<input type="text" [(ngModel)]="minY" class="range-input">
+		<input type="range" class="slider" [(ngModel)]="fractal.minY" min="-1.0" max={{fractal.maxY}} step="0.01">
+		<input type="text" [(ngModel)]="fractal.minY" class="range-input">
 	</li>
 
 
 	<li class="range-label"> Maximum Y or bottom screen edge: </li>
 	<li>
-		<input type="range" class="slider" [(ngModel)]="maxY"  min={{minY}} max="1.0" step="0.01">
-		<input type="text" [(ngModel)]="maxY" class="range-input">
+		<input type="range" class="slider" [(ngModel)]="fractal.maxY"  min={{fractal.minY}} max="1.0" step="0.01">
+		<input type="text" [(ngModel)]="fractal.maxY" class="range-input">
 	</li>
 
 	
 	<li class="range-label"> Escape Value: </li>
 	<li>
-		<input type="range" class="slider" #escapeVal [(ngModel)]="iterations" min="10" max="1000" 
-		  (change)="onIterChanged($event.target.value)" >
-		<p>{{iterations}}</p>
-	</li>
-
-	<li>
-		<button (click)="onPopulate()" > Populate </button>
+		<input type="range" class="slider" #escapeVal [(ngModel)]="fractal.iterations" (change)="iterationsChange($event.target.value)" min="10" max="1000">
+		<p>{{fractal.iterations}}</p>
 	</li>
 </ul>
