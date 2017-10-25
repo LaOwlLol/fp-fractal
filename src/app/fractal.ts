@@ -1,7 +1,6 @@
 import { OnChanges } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-
+import {Observable} from 'rxjs/Rx';
 import { Pixel } from './pixel';
 
 export class Fractal {
@@ -19,13 +18,12 @@ export class Fractal {
 	lowColor: string;
 	highColor: string;
 	palette: string[];
-	pixelBuffer: Observable<Pixel>;
+	pixelBuffer: Observable<Observable<Pixel>>;
 	//observer: any;
 
 	constructor(_minX: number, _maxX: number, _minY: number, _maxY: number,
 		_width: number, _height: number, _iter: number,
 		_escapeColor: string, _lowColor: string, _highColor: string) {
-
 
 		//this.dirtyPixels = true;
 		this.dirtyPalette = true;
@@ -40,11 +38,13 @@ export class Fractal {
 		this.lowColor = _lowColor;
 		this.highColor = _highColor;
 
-		this.pixelBuffer = new Observable( observer => { 
-			//this.observer = observer;
-			this.refreshPixelData(observer); 
-		});
+		
+		let timer = Observable.timer(300);
+		let source = Observable.range(0, this.width*this.height);
 
+		this.pixelBuffer = source.map(x => {
+			return this.refreshPixelData(x);
+		}).window(timer);
 	}
 
 	ngOnChanges() {
@@ -100,7 +100,7 @@ export class Fractal {
 		this.HighColor = newColor;
 	}
 
-	refreshPixelData(observer) {
+	refreshPixelData(p) {
 		//let newPixels = [];
 
 		
@@ -108,33 +108,29 @@ export class Fractal {
 			this.refreshPalette();
 		}
 
-		for (var i = 0; i < this.width; i++) {
-			for (var k = 0; k < this.height; k++) {
+		let i = p % this.width;
+		let k = Math.floor(p / this.width);
 
-				let x0 = this.scaleX(i);
-				let y0 = this.scaleY(k);
-				let _x = 0.0;
-				let _y = 0.0;
+		let x0 = this.scaleX(i);
+		let y0 = this.scaleY(k);
+		let _x = 0.0;
+		let _y = 0.0;
 
-				let iter = 0;
+		let iter = 0;
 
-				while ( ((_x*_x + _y*_y) < 4) && (iter < this.iterations)) {
-					let xtemp = _x*_x - _y*_y + x0;
-					_y = 2*_x*_y + y0;
-					_x = xtemp;
-					iter = iter + 1;
-				}
+		while ( ((_x*_x + _y*_y) < 4) && (iter < this.iterations)) {
+			let xtemp = _x*_x - _y*_y + x0;
+			_y = 2*_x*_y + y0;
+			_x = xtemp;
+			iter = iter + 1;
+		}
 
-				//console.log(i +","+k+": "+iter);
-				if (iter < this.iterations) {
-					observer.next(
-						{x: i, y: k, c: this.palette[iter] }
-					);
-				}
-				else {
-					observer.next({x: i, y: k, c: this.escapeColor});
-				}
-			}
+		//console.log(i +","+k+": "+iter);
+		if (iter < this.iterations) {
+			return { x: i, y: k, c: this.palette[iter] };
+		}
+		else {
+			return { x: i, y: k, c: this.escapeColor };
 		}
 
 	}

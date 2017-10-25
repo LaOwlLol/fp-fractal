@@ -10,7 +10,7 @@ import { AppFractal } from './app-data';
 export class FractalDataService {
 
 	getPixels(): Observable<Pixel> {
-		return AppFractal.pixelBuffer;
+		return AppFractal.pixelBuffer.concatAll();
 	}
 
 	getWidth(): number {
