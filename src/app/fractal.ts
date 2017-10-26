@@ -18,6 +18,14 @@ export class Fractal {
 	lowColor: string;
 	highColor: string;
 	palette: string[];
+
+	minXBuffer: Observable<Observable<number>>;
+	maxXBuffer: Observable<Observable<number>>;
+	minYBuffer: Observable<Observable<number>>;
+	maxYBuffer: Observable<Observable<number>>;
+	widthBuffer: Observable<Observable<number>>;
+	heightBuffer: Observable<Observable<number>>;
+	iterationsBuffer: Observable<Observable<number>>;
 	pixelBuffer: Observable<Observable<Pixel>>;
 	//observer: any;
 
@@ -38,13 +46,31 @@ export class Fractal {
 		this.lowColor = _lowColor;
 		this.highColor = _highColor;
 
-		
+		//reoccuring observable on a timer
 		let timer = Observable.timer(300);
-		let source = Observable.range(0, this.width*this.height);
 
-		this.pixelBuffer = source.map(x => {
-			return this.refreshPixelData(x);
+		//range of pixels
+		let pixelSource = Observable.range(0, this.width*this.height);
+
+		//map pixels to the escape test function 
+		this.pixelBuffer = pixelSource.map(x => {
+			return this.escapeTestPixel(x);
 		}).window(timer);
+
+		// "Edges" min and max x and Y values
+		let minXSource = Observable.of(this.minX);
+		let minYSource = Observable.of(this.minY);
+		let maxXSource = Observable.of(this.maxX);
+		let maxYSource = Observable.of(this.maxY);
+
+		this.minXBuffer = minXSource.window(timer);
+		this.minYBuffer = minYSource.window(timer);
+		this.maxXBuffer = maxXSource.window(timer);
+		this.maxYBuffer = maxYSource.window(timer);
+
+		let iterationSource = Observable.of(this.iterations);
+		this.iterationsBuffer = iterationSource.window(timer);
+		
 	}
 
 	ngOnChanges() {
@@ -94,13 +120,15 @@ export class Fractal {
 
 	LowColor(newColor) {
 		this.LowColor = newColor;
+		this.dirtyPalette = true;
 	}
 
 	HighColor(newColor) {
 		this.HighColor = newColor;
+		this.dirtyPalette = true;
 	}
 
-	refreshPixelData(p) {
+	escapeTestPixel(p) {
 		//let newPixels = [];
 
 		

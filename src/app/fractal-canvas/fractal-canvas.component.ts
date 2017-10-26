@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, DoCheck, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, DoCheck, ViewChild, ElementRef} from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -43,7 +43,7 @@ export class FractalCanvasComponent implements OnInit {
 
   	ngOnDoCheck() {
   		//this.pixelBuffer.unsubscribe();
-  		this.pixelBuffer = this.fractalService.getPixels().subscribe( p =>  this.paint(p) );
+  		//this.pixelBuffer = this.fractalService.getPixels().subscribe( p =>  this.paint(p) );
   	}
 
   	ngOnChanges() {
