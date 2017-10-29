@@ -132,8 +132,6 @@ export class Fractal {
 			this.refreshPalette();
 		}
 
-		console.log('running escape test.')
-
 		for (let k = 0; k < this.height; ++k) {
 			for (let i = 0; i < this.width; ++i ) {
 				let x0 = this.scaleX(i);
@@ -150,7 +148,6 @@ export class Fractal {
 					iter = iter + 1;
 				}
 
-				//console.log(i +","+k+": "+iter);
 				if (iter < this.iterations) {
 					this.pixelBuffer.next({ x: i, y: k, c: this.palette[iter] });
 				}
@@ -181,7 +178,6 @@ export class Fractal {
 			c[1] = start[1] * alpha + (1 - alpha) * end[1];
 			c[2] = start[2] * alpha + (1 - alpha) * end[2];
 
-			//console.log(i+": "+this.convertToHex(c));
 			saida.push(this.convertToHex(c));
 		}
 

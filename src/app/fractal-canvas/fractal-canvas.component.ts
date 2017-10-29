@@ -38,7 +38,6 @@ export class FractalCanvasComponent implements OnInit {
 	}
 
 	ngOnDestroy() {
-    	console.log('Destroying canvas?!');
     	this.pixelSubscription.unsubscribe();
   	}
 
