@@ -1,7 +1,7 @@
 {
   "name": "fp-fractal",
-  "version": "1.5.0",
-  "description": "A simple fractal viewer.",
+  "version": "2.1.0",
+  "description": "A simple fractal viewer.  Now with reactive rendering, and color selection!",
   "author": "LaOwlLol (Nate G)",
   "license": "CC-BY-NC-4.0",
   "repository": {
