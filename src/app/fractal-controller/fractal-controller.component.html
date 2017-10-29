@@ -32,4 +32,14 @@
 		<input type="range" class="slider" #escapeVal [(ngModel)]="iterations" (change)="iterationsChange($event.target.value)" min="10" max="1000">
 		<label>{{iterations}}</label>
 	</li>
+
+	<li class="color-label"> Color Palette (Escape, Spectrum Low, Spectrum High): </li>
+	<li>
+		<input type="color" name="favcolor" [(ngModel)]="escapeColor"  (change)="escapeColorChange($event.target.value)">
+
+		<input type="color" name="favcolor" [(ngModel)]="lowColor"  (change)="lowColorChange($event.target.value)">
+
+		<input type="color" name="favcolor" [(ngModel)]="highColor"  (change)="highColorChange($event.target.value)">
+	</li>
+	
 </ul>

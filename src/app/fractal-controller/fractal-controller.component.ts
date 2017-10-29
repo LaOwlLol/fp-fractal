@@ -18,11 +18,17 @@ export class FractalControllerComponent implements OnInit {
 	maxX: number;
 	minY: number;
 	maxY: number;
+	
+	lowColor: string;
+	highColor: string;
+	escapeColor: string;
+
 	iterationsSubscription: Subscription;
 	minXSubscription: Subscription;
 	maxXSubscription: Subscription;
 	minYSubscription: Subscription;
 	maxYSubscription: Subscription;
+
 
 	constructor( private fractalService: FractalDataService ) { }
 
@@ -33,6 +39,10 @@ export class FractalControllerComponent implements OnInit {
 		this.minYSubscription = this.fractalService.getMinYSubscription( n => this.minY = n );
 		this.maxYSubscription = this.fractalService.getMaxYSubscription( n => this.maxY = n );
 		this.iterationsSubscription = this.fractalService.getEscapeSubscription( n => this.iterations = n );
+
+		this.escapeColor = this.fractalService.getEscapeColor();
+		this.lowColor = this.fractalService.getLowColor();
+		this.highColor = this.fractalService.getHighColor();
 	}
 
 	ngOnDestroy() {
@@ -59,5 +69,15 @@ export class FractalControllerComponent implements OnInit {
 	}
 	maxYChange(value) {
 		this.fractalService.setMaxY(value);
+	}
+
+	escapeColorChange(value) {
+		this.fractalService.setEscapeColor(value);
+	}
+	lowColorChange(value) {
+		this.fractalService.setLowColor(value);
+	}
+	highColorChange(value) {
+		this.fractalService.setHighColor(value);
 	}
 }

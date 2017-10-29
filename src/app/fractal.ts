@@ -107,19 +107,19 @@ export class Fractal {
 	}
 
 	EscapeColor(newColor) {
-		this.EscapeColor = newColor;
+		this.escapeColor = newColor;
 		this.escapeTestPixels();
 	}
 
 	LowColor(newColor) {
-		this.LowColor = newColor;
+		this.lowColor = newColor;
 		this.dirtyPalette = true;
 		this.refreshPalette();
 		this.escapeTestPixels();
 	}
 
 	HighColor(newColor) {
-		this.HighColor = newColor;
+		this.highColor = newColor;
 		this.dirtyPalette = true;
 		this.refreshPalette();
 		this.escapeTestPixels();
