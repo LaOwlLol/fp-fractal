@@ -1,5 +1,20 @@
 
 <ul>
+	<li class="color-label"> Color Palette (Escape, Spectrum Low, Spectrum High): </li>
+	<li>
+		<input type="color" name="favcolor" [(ngModel)]="escapeColor"  (change)="escapeColorChange($event.target.value)">
+
+		<input type="color" name="favcolor" [(ngModel)]="lowColor"  (change)="lowColorChange($event.target.value)">
+
+		<input type="color" name="favcolor" [(ngModel)]="highColor"  (change)="highColorChange($event.target.value)">
+	</li>
+
+	<li class="range-label"> Escape Value: </li>
+	<li>
+		<input type="range" class="slider" #escapeVal [(ngModel)]="iterations" (change)="iterationsChange($event.target.value)" min="10" max="1000">
+		<label>{{iterations}}</label>
+	</li>
+
 	<li class="range-label"> Minimum X or left screen edge: </li>
 	<li>
 		<input type="range" [(ngModel)]="minX" (change)="minXChange($event.target.value)" class="slider" min="-2.5" max={{maxX}} step="0.01">
@@ -24,22 +39,6 @@
 	<li>
 		<input type="range" class="slider" [(ngModel)]="maxY" (change)="maxYChange($event.target.value)" min={{minY}} max="1.0" step="0.01">
 		<input type="text" [(ngModel)]="maxY" (change)="maxYChange($event.target.value)" class="range-input">
-	</li>
-
-	
-	<li class="range-label"> Escape Value: </li>
-	<li>
-		<input type="range" class="slider" #escapeVal [(ngModel)]="iterations" (change)="iterationsChange($event.target.value)" min="10" max="1000">
-		<label>{{iterations}}</label>
-	</li>
-
-	<li class="color-label"> Color Palette (Escape, Spectrum Low, Spectrum High): </li>
-	<li>
-		<input type="color" name="favcolor" [(ngModel)]="escapeColor"  (change)="escapeColorChange($event.target.value)">
-
-		<input type="color" name="favcolor" [(ngModel)]="lowColor"  (change)="lowColorChange($event.target.value)">
-
-		<input type="color" name="favcolor" [(ngModel)]="highColor"  (change)="highColorChange($event.target.value)">
 	</li>
 	
 </ul>
