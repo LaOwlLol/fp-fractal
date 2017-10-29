@@ -4,110 +4,109 @@ import { Subject } from 'rxjs/Rx';
 
 import { Pixel } from './pixel';
 import { Fractal } from './fractal';
+import { AppFractal } from './app-fractal';
 
 @Injectable()
 export class FractalDataService {
-	AppFractal: Fractal;
 
 	constructor() {
-		this.AppFractal = new Fractal( -2.5, 1, -1, 1,
-		  1024, 600, 15, "#000000", "#ffc200", "#0000ff");
+		
 	}
 
 	getPixelSubscription(obs): any {
-		let subscription = this.AppFractal.pixelBuffer.subscribe(obs);
-		this.AppFractal.escapeTestPixels();
+		let subscription = AppFractal.pixelBuffer.subscribe(obs);
+		AppFractal.escapeTestPixels();
 		return subscription;
 	}
 
 	getWidth(): number {
-		return this.AppFractal.width;
+		return AppFractal.width;
 	}
 
 	getHeight(): number {
-		return this.AppFractal.height;
+		return AppFractal.height;
 	}
 
 	getEscapeColor(): string {
-		return this.AppFractal.escapeColor;
+		return AppFractal.escapeColor;
 	}
 	
 	getLowColor(): string {
-		return this.AppFractal.lowColor;
+		return AppFractal.lowColor;
 	}
 
 	getHighColor(): string {
-		return this.AppFractal.highColor;
+		return AppFractal.highColor;
 	}
 
 	getEscapeSubscription(obs): any {
-		let subscription = this.AppFractal.iterationsBuffer.subscribe(obs);
-		this.AppFractal.iterationsBuffer.next(this.AppFractal.iterations);
+		let subscription = AppFractal.iterationsBuffer.subscribe(obs);
+		AppFractal.iterationsBuffer.next(AppFractal.iterations);
 		return  subscription;
 	}
 
 	getMinXSubscription(obs): any {
-		let subscription =  this.AppFractal.minXBuffer.subscribe(obs);
-		this.AppFractal.minXBuffer.next(this.AppFractal.minX);
+		let subscription =  AppFractal.minXBuffer.subscribe(obs);
+		AppFractal.minXBuffer.next(AppFractal.minX);
 		return subscription;
 	};
 
 	getMaxXSubscription(obs): any {
-		let subscription =  this.AppFractal.maxXBuffer.subscribe(obs);
-		this.AppFractal.maxXBuffer.next(this.AppFractal.maxX);
+		let subscription =  AppFractal.maxXBuffer.subscribe(obs);
+		AppFractal.maxXBuffer.next(AppFractal.maxX);
 		return subscription;
 	};
 
 	getMinYSubscription(obs): any {
-		let subscription =  this.AppFractal.minYBuffer.subscribe(obs);
-		this.AppFractal.minYBuffer.next(this.AppFractal.minY);
+		let subscription = AppFractal.minYBuffer.subscribe(obs);
+		AppFractal.minYBuffer.next(AppFractal.minY);
 		return subscription;
 	};
 
 	getMaxYSubscription(obs): any {
-		let subscription =  this.AppFractal.maxYBuffer.subscribe(obs);
-		this.AppFractal.maxYBuffer.next(this.AppFractal.maxY);
+		let subscription = AppFractal.maxYBuffer.subscribe(obs);
+		AppFractal.maxYBuffer.next(AppFractal.maxY);
 		return subscription;
 	};
 	
 	setMinX(value): void {
-		this.AppFractal.MinX(value);
+		AppFractal.MinX(value);
 	}
 
 	setMaxX(value): void {
-		this.AppFractal.MaxX(value);
+		AppFractal.MaxX(value);
 	}
 
 	setMinY(value): void {
-		this.AppFractal.MinY(value);
+		AppFractal.MinY(value);
 	}
 
 	setMaxY(value): void {
-		this.AppFractal.MaxY(value);
+		AppFractal.MaxY(value);
 	}
 
 	setWidth(value): void {
-		this.AppFractal.Width(value);
+		AppFractal.Width(value);
 	}
 
 	setHeight(value): void {
-		this.AppFractal.Height(value);
+		AppFractal.Height(value);
 	}
 
 	setIterations(value): void {
-		this.AppFractal.Iterations(value);
+		AppFractal.Iterations(value);
 	}
 
 	setEscapeColor(value): void {
-		this.AppFractal.EscapeColor(value);
+		AppFractal.EscapeColor(value);
 	}
 
 	setLowColor(value): void {
-		this.AppFractal.LowColor(value);
+		AppFractal.LowColor(value);
 	}
 
 	setHighColor(value): void {
-		this.AppFractal.HighColor(value);
+		AppFractal.HighColor(value);
 	}
 
 }
