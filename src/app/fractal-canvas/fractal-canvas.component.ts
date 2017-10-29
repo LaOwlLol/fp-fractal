@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, OnDestroy, DoCheck, ViewChild, ElementRef} from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Rx';
 
 import { FractalDataService } from '../fractal-data.service';
 import { Pixel } from '../pixel';
@@ -16,7 +16,7 @@ export class FractalCanvasComponent implements OnInit {
 
 	@ViewChild('fractalCanvas') canvasRef: ElementRef;
 	canvasContext: CanvasRenderingContext2D;
-	pixelBuffer: any;
+	pixelSubscription: Subscription;
 
 	private running: boolean;
 
@@ -33,12 +33,13 @@ export class FractalCanvasComponent implements OnInit {
 		//this.canvasRef.nativeElement.style.width = this.fractal.width;
 		//this.canvasRef.nativeElement.style.height = this.fractal.height;
 
-		this.pixelBuffer = this.fractalService.getPixels().subscribe( p =>  this.paint(p) );
+		this.pixelSubscription = this.fractalService.getPixelSubscription( (n) => this.paint(n) );
+
 	}
 
 	ngOnDestroy() {
-    	//this.running = false;
-    	this.pixelBuffer.unsubscribe();
+    	console.log('Destroying canvas?!');
+    	this.pixelSubscription.unsubscribe();
   	}
 
   	ngOnDoCheck() {
@@ -49,31 +50,11 @@ export class FractalCanvasComponent implements OnInit {
   	ngOnChanges() {
   	}
  
- 	private paint(pixel: Pixel) {
+  	paint(pixel: Pixel) {
 
- 		/*
- 		if (!this.running) {
- 			return;
- 		}
- 		*/
-
- 		//console.log(pixel.c);
 		this.canvasContext.fillStyle = pixel.c;
 		this.canvasContext.fillRect(pixel.x, pixel.y, 1, 1);
 
-		/*
-
-		let ctx: CanvasRenderingContext2D =
-		  this.canvasRef.nativeElement.getContext('2d');
-
-		for (let {x, y, c} of this.fractal.pixelData) {
-			ctx.fillStyle = c;
-			ctx.fillRect(x, y, 1, 1);
-		}
-
-		*/
-		
-		//requestAnimationFrame(() => this.paint());
  	}
   
 }

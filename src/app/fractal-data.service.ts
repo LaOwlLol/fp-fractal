@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Rx';
 
 import { Pixel } from './pixel';
 import { Fractal } from './fractal';
@@ -14,8 +14,10 @@ export class FractalDataService {
 		  1024, 600, 15, "#000000", "#ffc200", "#0000ff");
 	}
 
-	getPixels(): Observable<Pixel> {
-		return this.AppFractal.pixelBuffer.concatAll();
+	getPixelSubscription(obs): any {
+		let subscription = this.AppFractal.pixelBuffer.subscribe(obs);
+		this.AppFractal.escapeTestPixels();
+		return subscription;
 	}
 
 	getWidth(): number {
@@ -38,24 +40,34 @@ export class FractalDataService {
 		return this.AppFractal.highColor;
 	}
 
-	getIterations(): Observable<number> {
-		return this.AppFractal.iterationsBuffer.concatAll();
+	getEscapeSubscription(obs): any {
+		let subscription = this.AppFractal.iterationsBuffer.subscribe(obs);
+		this.AppFractal.iterationsBuffer.next(this.AppFractal.iterations);
+		return  subscription;
 	}
 
-	getMinX(): Observable<number> {
-		return this.AppFractal.minXBuffer.concatAll();
+	getMinXSubscription(obs): any {
+		let subscription =  this.AppFractal.minXBuffer.subscribe(obs);
+		this.AppFractal.minXBuffer.next(this.AppFractal.minX);
+		return subscription;
 	};
 
-	getMaxX(): Observable<number> {
-		return this.AppFractal.maxXBuffer.concatAll();
+	getMaxXSubscription(obs): any {
+		let subscription =  this.AppFractal.maxXBuffer.subscribe(obs);
+		this.AppFractal.maxXBuffer.next(this.AppFractal.maxX);
+		return subscription;
 	};
 
-	getMinY(): Observable<number> {
-		return this.AppFractal.minYBuffer.concatAll();
+	getMinYSubscription(obs): any {
+		let subscription =  this.AppFractal.minYBuffer.subscribe(obs);
+		this.AppFractal.minYBuffer.next(this.AppFractal.minY);
+		return subscription;
 	};
 
-	getMaxY(): Observable<number> {
-		return this.AppFractal.maxYBuffer.concatAll();
+	getMaxYSubscription(obs): any {
+		let subscription =  this.AppFractal.maxYBuffer.subscribe(obs);
+		this.AppFractal.maxYBuffer.next(this.AppFractal.maxY);
+		return subscription;
 	};
 	
 	setMinX(value): void {

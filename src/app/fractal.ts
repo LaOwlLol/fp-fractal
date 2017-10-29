@@ -1,12 +1,15 @@
 import { OnChanges } from '@angular/core';
 
-import {Observable} from 'rxjs/Rx';
+import { Subject } from 'rxjs/Rx';
+
 import { Pixel } from './pixel';
 
 export class Fractal {
 
 	//dirtyPixels: boolean;
 	dirtyPalette: boolean;
+	PixelWindowOpen: boolean;
+	cPixel: number;
 	minX: number;
 	maxX: number;
 	minY: number;
@@ -19,14 +22,14 @@ export class Fractal {
 	highColor: string;
 	palette: string[];
 
-	minXBuffer: Observable<Observable<number>>;
-	maxXBuffer: Observable<Observable<number>>;
-	minYBuffer: Observable<Observable<number>>;
-	maxYBuffer: Observable<Observable<number>>;
-	widthBuffer: Observable<Observable<number>>;
-	heightBuffer: Observable<Observable<number>>;
-	iterationsBuffer: Observable<Observable<number>>;
-	pixelBuffer: Observable<Observable<Pixel>>;
+	minXBuffer: Subject<number>;
+	maxXBuffer: Subject<number>;
+	minYBuffer: Subject<number>;
+	maxYBuffer: Subject<number>;
+	widthBuffer: Subject<number>;
+	heightBuffer: Subject<number>;
+	iterationsBuffer: Subject<number>;
+	pixelBuffer: Subject<Pixel>;
 	//observer: any;
 
 	constructor(_minX: number, _maxX: number, _minY: number, _maxY: number,
@@ -46,36 +49,14 @@ export class Fractal {
 		this.lowColor = _lowColor;
 		this.highColor = _highColor;
 
-		//reoccuring observable on a timer
-		let timer = Observable.timer(300);
-
-		//range of pixels
-		let pixelSource = Observable.range(0, this.width*this.height);
-
-		//map pixels to the escape test function 
-		this.pixelBuffer = pixelSource.map(x => {
-			return this.escapeTestPixel(x);
-		}).window(timer);
-
-		// "Edges" min and max x and Y values
-		let minXSource = Observable.of(this.minX);
-		let minYSource = Observable.of(this.minY);
-		let maxXSource = Observable.of(this.maxX);
-		let maxYSource = Observable.of(this.maxY);
-
-		this.minXBuffer = minXSource.window(timer);
-		this.minYBuffer = minYSource.window(timer);
-		this.maxXBuffer = maxXSource.window(timer);
-		this.maxYBuffer = maxYSource.window(timer);
-
-		let iterationSource = Observable.of(this.iterations);
-		this.iterationsBuffer = iterationSource.window(timer);
+		this.minXBuffer = new Subject();
+		this.maxXBuffer = new Subject();
+		this.minYBuffer = new Subject();
+		this.maxYBuffer = new Subject();
+		this.iterationsBuffer = new Subject();
+		this.pixelBuffer = new Subject();
 		
 	}
-
-	ngOnChanges() {
-  		//this.refreshPixelData(this.observer);
-  	}
 
 	/*DirtyPixels(value) {
 		this.dirtyPixels = value;
@@ -87,18 +68,26 @@ export class Fractal {
 
 	MinX(newMin) {
 		this.minX = newMin;
+		this.minXBuffer.next( this.minX );
+		this.escapeTestPixels();
 	}
 
 	MaxX(newMax) {
 		this.maxX = newMax;
+		this.maxXBuffer.next( this.maxX );
+		this.escapeTestPixels();
 	}
 
 	MinY(newMin) {
 		this.minY = newMin;
+		this.minYBuffer.next( this.minY );
+		this.escapeTestPixels();
 	}
 
 	MaxY(newMax) {
 		this.maxY = newMax;
+		this.maxYBuffer.next( this.maxY );
+		this.escapeTestPixels();
 	}
 
 	Width(newWidth) {
@@ -112,53 +101,63 @@ export class Fractal {
 	Iterations(newEscape) {
 		this.iterations = newEscape;
 		this.dirtyPalette = true;
+		this.iterationsBuffer.next( this.iterations );
+		this.refreshPalette();
+		this.escapeTestPixels();
 	}
 
 	EscapeColor(newColor) {
 		this.EscapeColor = newColor;
+		this.escapeTestPixels();
 	}
 
 	LowColor(newColor) {
 		this.LowColor = newColor;
 		this.dirtyPalette = true;
+		this.refreshPalette();
+		this.escapeTestPixels();
 	}
 
 	HighColor(newColor) {
 		this.HighColor = newColor;
 		this.dirtyPalette = true;
+		this.refreshPalette();
+		this.escapeTestPixels();
 	}
 
-	escapeTestPixel(p) {
-		//let newPixels = [];
 
+	escapeTestPixels() {
 		
 		if (this.dirtyPalette) {
 			this.refreshPalette();
 		}
 
-		let i = p % this.width;
-		let k = Math.floor(p / this.width);
+		console.log('running escape test.')
 
-		let x0 = this.scaleX(i);
-		let y0 = this.scaleY(k);
-		let _x = 0.0;
-		let _y = 0.0;
+		for (let k = 0; k < this.height; ++k) {
+			for (let i = 0; i < this.width; ++i ) {
+				let x0 = this.scaleX(i);
+				let y0 = this.scaleY(k);
+				let _x = 0.0;
+				let _y = 0.0;
 
-		let iter = 0;
+				let iter = 0;
 
-		while ( ((_x*_x + _y*_y) < 4) && (iter < this.iterations)) {
-			let xtemp = _x*_x - _y*_y + x0;
-			_y = 2*_x*_y + y0;
-			_x = xtemp;
-			iter = iter + 1;
-		}
+				while ( ((_x*_x + _y*_y) < 4) && (iter < this.iterations)) {
+					let xtemp = _x*_x - _y*_y + x0;
+					_y = 2*_x*_y + y0;
+					_x = xtemp;
+					iter = iter + 1;
+				}
 
-		//console.log(i +","+k+": "+iter);
-		if (iter < this.iterations) {
-			return { x: i, y: k, c: this.palette[iter] };
-		}
-		else {
-			return { x: i, y: k, c: this.escapeColor };
+				//console.log(i +","+k+": "+iter);
+				if (iter < this.iterations) {
+					this.pixelBuffer.next({ x: i, y: k, c: this.palette[iter] });
+				}
+				else {
+					this.pixelBuffer.next({ x: i, y: k, c: this.escapeColor });
+				}		
+			}
 		}
 
 	}
